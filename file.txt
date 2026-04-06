@@ -1,1 +1,43 @@
+Hello am going to show you some codes for git bash and python and for python this a code were it shows what your going to have for breakfast and you can change this code and this is the code for breakfast
 
+import tkinter as tk
+import random
+
+# Breakfast list
+breakfasts = [
+    "Pancakes",
+    "Eggs and Toast",
+    "Cereal",
+    "Oatmeal",
+    "Waffles",
+    "Bagel",
+    "Fruit and Yogurt",
+    "Smoothie"
+    "hash brown"
+    "waffles"
+]
+
+# Function
+def pick_breakfast():
+    choice = random.choice(breakfasts)
+    result_label.config(text="Today you are having: " + choice)
+
+# Window
+window = tk.Tk()
+window.title("Breakfast App")
+window.geometry("300x200")
+
+# Title
+title_label = tk.Label(window, text="Breakfast Picker", font=("Arial", 16))
+title_label.pack(pady=10)
+
+# Button
+pick_button = tk.Button(window, text="Pick My Breakfast", command=pick_breakfast)
+pick_button.pack(pady=10)
+
+# Result
+result_label = tk.Label(window, text="")
+result_label.pack(pady=10)
+
+# Run app
+window.mainloop()
