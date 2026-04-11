@@ -1,1 +1,85 @@
+import pygame
+import random
 
+pygame.init()
+
+# Screen
+WIDTH, HEIGHT = 600, 400
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Mini Basketball Game")
+
+# Colors
+WHITE = (255, 255, 255)
+ORANGE = (255, 140, 0)
+RED = (200, 0, 0)
+BLACK = (0, 0, 0)
+
+# Ball
+ball_x = 50
+ball_y = HEIGHT - 50
+ball_radius = 10
+shoot = False
+vel_x = 5
+vel_y = -8
+gravity = 0.4
+
+# Hoop
+hoop_x = WIDTH - 100
+hoop_y = 150
+hoop_width = 60
+hoop_height = 10
+
+# Score
+score = 0
+font = pygame.font.SysFont(None, 30)
+
+clock = pygame.time.Clock()
+running = True
+
+while running:
+    clock.tick(60)
+    screen.fill(WHITE)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and not shoot:
+                shoot = True
+                vel_x = 5
+                vel_y = -8
+
+    # Move ball
+    if shoot:
+        ball_x += vel_x
+        ball_y += vel_y
+        vel_y += gravity
+
+        # Check score
+        if (hoop_x < ball_x < hoop_x + hoop_width and
+            hoop_y < ball_y < hoop_y + hoop_height):
+            score += 1
+            shoot = False
+            ball_x = 50
+            ball_y = HEIGHT - 50
+
+        # Reset if missed
+        if ball_y > HEIGHT:
+            shoot = False
+            ball_x = 50
+            ball_y = HEIGHT - 50
+
+    # Draw hoop
+    pygame.draw.rect(screen, RED, (hoop_x, hoop_y, hoop_width, hoop_height))
+
+    # Draw ball
+    pygame.draw.circle(screen, ORANGE, (int(ball_x), int(ball_y)), ball_radius)
+
+    # Draw score
+    text = font.render(f"Score: {score}", True, BLACK)
+    screen.blit(text, (10, 10))
+
+    pygame.display.update()
+
+pygame.quit()
